@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Plan ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#faf7f2;--warm:#f5efe6;--sage:#8aab8a;--sage-l:#c4d9c4;--sage-d:#5a7a5a;--blush:#e8c4b8;--blush-l:#f5e6e0;--gold:#c9a84c;--gold-l:#f0e0b0;--text:#2a2420;--mid:#6b5e56;--light:#9e918a;--border:rgba(139,111,94,0.15);--sh:0 2px 16px rgba(0,0,0,0.06);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:14px;line-height:1.6;overflow-x:hidden;}
+nav{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 1rem;gap:1rem;overflow-x:auto;}
+.logo{font-family:'Playfair Display',serif;font-size:15px;white-space:nowrap;flex-shrink:0;}
+.logo span{color:var(--sage-d);}
+.nav-links{display:flex;gap:4px;flex-shrink:0;}
+.nb{padding:5px 12px;border-radius:20px;border:none;background:none;font-size:12px;font-weight:500;color:var(--mid);cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.nb:hover,.nb.on{background:var(--sage-l);color:var(--sage-d);}
+.hero{padding:2.5rem 1.5rem 2rem;text-align:center;background:linear-gradient(160deg,var(--warm),var(--cream));border-bottom:1px solid var(--border);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,38px);font-weight:400;line-height:1.2;margin-bottom:6px;}
+.hero h1 em{font-style:italic;color:var(--sage-d);}
+.hero p{font-size:12px;color:var(--light);margin-bottom:1rem;}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.hbadge{padding:3px 10px;border-radius:20px;font-size:11px;background:#fff;border:1px solid var(--border);color:var(--mid);}
+.sec{padding:2rem 1.5rem;max-width:860px;margin:0 auto;display:none;}
+.sec.active{display:block;}
+.sec-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:4px;}
+.sec-title span{color:var(--sage-d);}
+.sec-sub{font-size:12px;color:var(--light);margin-bottom:1.25rem;}
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:10px;box-shadow:var(--sh);}
+/* SCHEDULE */
+.tb{display:grid;grid-template-columns:64px 8px 1fr;gap:0 10px;align-items:start;padding:5px 0;}
+.tb-time{font-size:11px;color:var(--light);padding-top:9px;text-align:right;}
+.tb-col{display:flex;flex-direction:column;align-items:center;padding-top:9px;}
+.tb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.tb-line{width:1px;background:var(--border);flex:1;min-height:18px;margin-top:2px;}
+.tb-body{border-radius:8px;padding:7px 10px;cursor:default;}
+.tb-body:hover{background:var(--warm);}
+.tb-lbl{font-size:13px;font-weight:500;}
+.tb-det{font-size:12px;color:var(--light);margin-top:1px;}
+.tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;margin-left:5px;vertical-align:middle;}
+.t-m{background:#fef9c3;color:#854d0e;}
+.t-w{background:#dbeafe;color:#1e40af;}
+.t-mv{background:#dcfce7;color:#166534;}
+.t-ev{background:#f3e8ff;color:#7e22ce;}
+.t-f{background:#ffe4e6;color:#9f1239;}
+.t-c{background:#e0f2fe;color:#0369a1;}
+/* MEALS */
+.wtabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap;}
+.wtab{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:none;color:var(--mid);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.wtab.on{background:var(--sage);color:#fff;border-color:var(--sage);}
+.day-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:10px;}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.dn{font-size:12px;font-weight:500;color:var(--mid);}
+.dbs{display:flex;gap:5px;}
+.db{font-size:10px;padding:2px 8px;border-radius:20px;}
+.db-cal{background:var(--gold-l);color:#7a5a00;}
+.db-c{background:var(--blush-l);color:#9f2d20;}
+.db-p{background:#fdf4ff;color:#7e22ce;}
+.mt{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--light);margin-bottom:2px;}
+.mn{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.md{font-size:12px;color:var(--mid);line-height:1.5;}
+.mdiv{height:1px;background:var(--border);margin:8px 0;}
+/* GROCERY */
+.store-hdr{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:10px;border:1px solid;}
+.s-a{background:#fffbeb;color:#92400e;border-color:#fcd34d;}
+.s-av{background:#f0fdf4;color:#166534;border-color:#86efac;}
+.gtbl{width:100%;border-collapse:collapse;}
+.gtbl th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--light);padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--warm);}
+.gtbl td{font-size:12px;padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.gtbl tr:last-child td{border-bottom:none;}
+.gtbl tr:hover td{background:var(--warm);}
+.gcath{background:var(--warm)!important;font-size:10px!important;font-weight:600!important;color:var(--light)!important;letter-spacing:.05em!important;}
+.qty{font-size:11px;font-weight:500;color:var(--sage-d);}
+.fn{font-size:10px;color:var(--light);font-style:italic;margin-top:1px;}
+.note{background:var(--blush-l);border:1px solid var(--blush);border-radius:8px;padding:8px 12px;font-size:12px;color:#9f2d20;margin-bottom:12px;}
+.sushi-box{background:linear-gradient(135deg,#eff6ff,#e0f2fe);border:1px solid #93c5fd;border-radius:12px;padding:1.25rem;margin-top:1rem;}
+/* COOKING */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:580px){.cgrid{grid-template-columns:1fr;}}
+.ccard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1rem;}
+.ctitle{font-size:13px;font-weight:500;margin-bottom:5px;}
+.cdet{font-size:12px;color:var(--mid);line-height:1.6;}
+.ctag{font-size:10px;font-weight:500;color:var(--sage-d);background:var(--sage-l);padding:1px 7px;border-radius:20px;margin-left:4px;}
+/* CAT */
+.cat-box{background:linear-gradient(135deg,#fdf4ff,#f5e6e0);border:1px solid var(--blush);border-radius:14px;padding:1.25rem;}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+@media(max-width:480px){.cat-grid{grid-template-columns:1fr;}}
+/* LEARNING */
+.learn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:580px){.learn-grid{grid-template-columns:1fr;}}
+.lcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1rem;}
+.lnum{font-size:10px;font-weight:600;color:var(--sage-d);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.ltitle{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.ldet{font-size:12px;color:var(--mid);line-height:1.6;}
+.lres{font-size:11px;color:var(--sage-d);margin-top:6px;font-weight:500;}
+.ltime{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--gold-l);color:#7a5a00;margin-top:4px;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Mon <span>Plan</span> ✨</div>
+  <div class="nav-links">
+    <button class="nb on" onclick="showSec('schedule',this)">⏰ Horaire</button>
+    <button class="nb" onclick="showSec('meals',this)">🍽 Repas</button>
+    <button class="nb" onclick="showSec('grocery',this)">🛒 Courses</button>
+    <button class="nb" onclick="showSec('cooking',this)">🍳 Cuisine</button>
+    <button class="nb" onclick="showSec('learning',this)">📚 Apprentissage</button>
+    <button class="nb" onclick="showSec('cat',this)">🐱 Chat</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Mon plan de vie<br><em>organisé & automatisé</em></h1>
+  <p>Tout en un seul endroit — cerveau libre pour ce qui compte vraiment.</p>
+  <div class="badges">
+    <span class="hbadge">🕖 7h réveil</span>
+    <span class="hbadge">🏃 Zone 2</span>
+    <span class="hbadge">💻 Business en construction</span>
+    <span class="hbadge">📚 Coding + Calculus</span>
+    <span class="hbadge">🌿 SOPK-friendly</span>
+    <span class="hbadge">🐱 Chat au régime</span>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="sec active" id="sec-schedule">
+  <div class="sec-title">Horaire <span>quotidien</span></div>
+  <div class="sec-sub">Réveil 7h · Coucher 23h · 8h de sommeil · Coding + temps chum 💕</div>
+  <div id="sched-blocks"><div class="tb">
+      <div class="tb-time">7:00</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Réveil<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Alarme sans snooze. Verre d'eau immédiatement.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">7:05</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Visage + dents<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Nettoyant doux, brosser les dents.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">7:10</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#10b981"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">🐱 Petit-déj du chat<span class="tag t-f">repas</span></div>
+        <div class="tb-det">Portion du matin. Même heure chaque jour.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">7:15</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">S'habiller pour le sport<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Vêtements préparés la veille — zéro décision.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">7:20</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#22c55e"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Zone 2 cardio<span class="tag t-mv">mouvement</span></div>
+        <div class="tb-det">50 min — marche, jogging ou vélo. FC 130–150 bpm.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">8:10</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#22c55e"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Refroidissement + étirements<span class="tag t-mv">mouvement</span></div>
+        <div class="tb-det">8 min. Laisser la FC redescendre.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">8:20</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Douche<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Corps quotidien. Shampooing 2–3×/semaine (sans sulfates).</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">8:45</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#f43f5e"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">🍳 Petit-déjeuner<span class="tag t-f">repas</span></div>
+        <div class="tb-det">2 oeufs durs + concombre + aneth + yogourt grec. Manger assis.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">9:05</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Planifier la journée<span class="tag t-m">matin</span></div>
+        <div class="tb-det">5 min — 3 priorités du jour.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">9:15</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#0ea5e9"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">💻 Bloc coding 1<span class="tag t-c">code</span></div>
+        <div class="tb-det">1h30 — leçon principale. Concentration totale.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">10:45</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Pause 10 min<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Se lever, marcher, eau, yeux au loin.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">10:55</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#0ea5e9"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">💻 Bloc coding 2<span class="tag t-c">code</span></div>
+        <div class="tb-det">1h05 — exercices pratiques ou projet.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">12:00</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#ec4899"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">💕 Temps avec ton chum<span class="tag t-f">repas</span></div>
+        <div class="tb-det">2–3h — appel, FaceTime. Ton moment prioritaire.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">14:30</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Décompression<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">45 min libres — chat, lecture, scroll, promenade.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">15:15</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#0ea5e9"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">💻 Bloc coding 3<span class="tag t-c">code</span></div>
+        <div class="tb-det">1h15 — révision, projet perso ou défi pratique.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">16:30</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#fbbf24"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Fin de session coding<span class="tag t-m">matin</span></div>
+        <div class="tb-det">Écrire 3 choses apprises aujourd'hui.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">16:40</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Temps libre<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">Hobby, sortie, série. C'est ton temps.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">18:00</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#10b981"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">🐱 Dîner du chat<span class="tag t-f">repas</span></div>
+        <div class="tb-det">Portion du soir. ~11h après le matin.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">19:00</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#f43f5e"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">🍽 Dîner<span class="tag t-f">repas</span></div>
+        <div class="tb-det">Anti-inflammatoire, faible en glucides. Manger assis.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">19:45</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Soirée libre<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">Série, appels, hobby.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">21:30</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Début rituel soir<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">Lumières tamisées. Plus de coding.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">21:40</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Soins de la peau + dents<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">Routine 30 min. Préparer vêtements de sport.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">22:10</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#a855f7"></div><div class="tb-line"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Lecture / journal<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">Pas d'écrans. Notes de la journée.</div>
+      </div>
+    </div>
+<div class="tb">
+      <div class="tb-time">23:00</div>
+      <div class="tb-col"><div class="tb-dot" style="background:#7c3aed"></div></div>
+      <div class="tb-body">
+        <div class="tb-lbl">Lumières éteintes 🌙<span class="tag t-ev">soir</span></div>
+        <div class="tb-det">8h de sommeil. Réveil 7h.</div>
+      </div>
+    </div></div>
+  <div class="card" style="margin-top:1rem">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px">📅 Samedi — Chores day</div>
+    <div style="font-size:12px;color:var(--mid)">9h réveil · Déj chat · Petit-déj · Marche zone 2 45–60 min · Lessives pendant la douche tout-en-un (1h) · Ménage complet · Coding 1h · Après-midi libre.</div>
+  </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px">☀️ Dimanche — Repos + prep</div>
+    <div style="font-size:12px;color:var(--mid)">9h réveil · Marche légère 30 min · Coding 1h révision · Meal prep 30 min (œufs en lot, concombres, yogourt) · Préparer le lundi (vêtements, priorités) · Dîner · Routine soir.</div>
+  </div>
+</div>
+
+<!-- MEALS -->
+<div class="sec" id="sec-meals">
+  <div class="sec-title">Plan de repas <span>30 jours</span></div>
+  <div class="sec-sub">~1000 cal/jour · ≤50g glucides · Anti-inflammatoire · SOPK · Poêle + air fryer + four</div>
+  <div class="note">☀️ <strong>Déjeuner de base :</strong> 2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature. <strong>~300 cal · ~8g glucides.</strong> Varier les fromages selon le jour.</div>
+  <div class="wtabs">
+    <button class="wtab on" onclick="showWeek(1,this)">Semaine 1</button>
+    <button class="wtab" onclick="showWeek(2,this)">Semaine 2</button>
+    <button class="wtab" onclick="showWeek(3,this)">Semaine 3</button>
+    <button class="wtab" onclick="showWeek(4,this)">Semaine 4</button>
+    <button class="wtab" onclick="showWeek(5,this)">Jours 29–30 🎉</button>
+  </div>
+  <div id="meal-content"></div>
+</div>
+
+<!-- GROCERY -->
+<div class="sec" id="sec-grocery">
+  <div class="sec-title">Liste de <span>courses</span></div>
+  <div class="sec-sub">Adonis 225 Peel · Avril 1100 Ottawa · Quantités exactes 30 jours · Zéro gaspillage</div>
+  <div class="note">🛒 <strong>Stratégie :</strong> 1 grand achat en début de mois. Légumes frais (concombres, tomates, champignons, laitue) à renouveler 2–3× dans le mois. Congeler les protéines par portions de 130–140g dès l'achat.</div>
+  <div class="store-hdr s-a">🟡 Marché Adonis — 225 Peel St, Griffintown</div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="gtbl">
+      <thead><tr><th>Produit</th><th>Quantité 30j</th><th>Notes</th></tr></thead>
+      <tbody id="grocery-body"><tr><td colspan="3" class="gcath">Protéines</td></tr>
+<tr><td>Boeuf haché extra-maigre</td><td><span class="qty">650g total</span></td><td>130g × 5 repas · 2 barquettes 350g · Congeler la 2e</td></tr>
+<tr><td>Crevettes surgelées</td><td><span class="qty">~150g crues</span></td><td>1 seul repas (jour 16) · petit sac ou portion séparée</td></tr>
+<tr><td>Sauce César (bouteille)</td><td><span class="qty">1 bouteille</span></td><td>30ml/repas × 2 salades César (jours 5 & 8)</td></tr>
+<tr><td>Bifteck contre-filet désossé</td><td><span class="qty">5 × 150g = 750g</span></td><td>À la pièce × 5 · ~150g/pièce</td></tr>
+<tr><td>Pilons de poulet</td><td><span class="qty">~1,2 kg</span></td><td>3 pilons (~300g cru) × 4 repas · air fryer 190°C/25 min</td></tr>
+<tr><td>Poitrine de poulet désossée s.p.</td><td><span class="qty">~750g (5 pièces de 150g)</span></td><td>Jours 5, 8, 15, 22, 26 · Congeler par portion de 150g</td></tr>
+<tr><td>Lanières de poulet (chicken strips)</td><td><span class="qty">~480g</span></td><td>80g/repas × 6 repas (toasts + soupe)</td></tr>
+<tr><td>Thon en conserve (170g)</td><td><span class="qty">4 boîtes × 170g</span></td><td>1 boîte entière par salade de thon × 4</td></tr>
+<tr><td>Charcuterie (dinde ou jambon)</td><td><span class="qty">~240g</span></td><td>30g/repas × 8 repas de toast</td></tr>
+<tr><td>Oeufs</td><td><span class="qty">~85 oeufs</span></td><td>5 cartonnes de 18 · ~2-3 oeufs/jour selon le jour</td></tr>
+<tr><td colspan="3" class="gcath">Légumes — renouveler 2–3× dans le mois</td></tr>
+<tr><td>Concombres libanais</td><td><span class="qty">3 sacs</span></td><td>80g/jour · ~5-6 concombres par sac</td></tr>
+<tr><td>Tomates en grappes</td><td><span class="qty">~2 kg total</span></td><td>60-80g/repas · ~650g par visite × 3</td></tr>
+<tr><td>Champignons frais (227g)</td><td><span class="qty">3 barquettes</span></td><td>60-80g/repas · 1 barquette par visite</td></tr>
+<tr><td>Laitue romaine ou Boston</td><td><span class="qty">3 têtes</span></td><td>60g/repas · 1 tête par visite</td></tr>
+<tr><td>Zucchini</td><td><span class="qty">4 pièces (~100g/soupe)</span></td><td>Pour soupe signature × 4 repas</td></tr>
+<tr><td>Butternut squash (courge)</td><td><span class="qty">1 petite (~400g)</span></td><td>100g/soupe × 4 repas</td></tr>
+<tr><td>Carottes</td><td><span class="qty">~350g</span></td><td>70g/soupe × 4 repas + extra</td></tr>
+<tr><td>Oignons (sac 3 lb)</td><td><span class="qty">1 sac</span></td><td>½ oignon/repas · dure tout le mois</td></tr>
+<tr><td>Oignons verts (bouquet)</td><td><span class="qty">2 bouquets</span></td><td>Soupe + garnir</td></tr>
+<tr><td>Ail (têtes)</td><td><span class="qty">4–5 têtes</span></td><td>1-2 gousses/repas · dure tout le mois</td></tr>
+<tr><td>Citrons frais (sac)</td><td><span class="qty">3 sacs</span></td><td>1 par visite · 10ml jus/repas</td></tr>
+<tr><td>Maïs en conserve</td><td><span class="qty">2 boîtes</span></td><td>60g/repas × salades de steak (5 repas)</td></tr>
+<tr><td>Olives vertes (pot)</td><td><span class="qty">1 pot</span></td><td>8 olives (~40g)/repas × salades de steak · dure longtemps</td></tr>
+<tr><td>Pommes de terre</td><td><span class="qty">~1,2 kg</span></td><td>100-120g/repas × 8 repas rôtis</td></tr>
+<tr><td colspan="3" class="gcath">Produits laitiers</td></tr>
+<tr><td>Yogourt grec nature plein gras (750g)</td><td><span class="qty">5 grands pots</span></td><td>100g/jour × 30 jours ≈ 3 kg · Portionner à l'achat</td></tr>
+<tr><td>Feta (bloc 400g)</td><td><span class="qty">2 blocs</span></td><td>25g/repas × ~20 repas</td></tr>
+<tr><td>Parmesan râpé (200g)</td><td><span class="qty">1–2 sacs</span></td><td>15g/repas × pasta + champignons farcis</td></tr>
+<tr><td>Gouda ou emmental (bloc)</td><td><span class="qty">1 bloc ~300g</span></td><td>25-30g/repas · omelettes et brouillés · dure tout le mois</td></tr>
+<tr><td>Ricotta (475g)</td><td><span class="qty">1 pot</span></td><td>40-60g/repas · petits-déj variés</td></tr>
+<tr><td>Fromage à la crème (250g)</td><td><span class="qty">1–2 paquets</span></td><td>30g/repas · omelettes + wraps</td></tr>
+<tr><td>Crème fraîche (200ml)</td><td><span class="qty">1–2 pots</span></td><td>15-20ml/repas × soupes + sauce poulet</td></tr>
+<tr><td>Beurre (454g)</td><td><span class="qty">1 paquet</span></td><td>8g/repas × pasta · dure longtemps</td></tr>
+<tr><td colspan="3" class="gcath">Épicerie sèche — achat unique</td></tr>
+<tr><td>Sauce soya</td><td><span class="qty">1 bouteille</span></td><td>Dure 3–4 mois</td></tr>
+<tr><td>Sauce piquante / sriracha</td><td><span class="qty">1 bouteille</span></td><td>Dure 3–4 mois</td></tr>
+<tr><td>Huile d'olive (500ml)</td><td><span class="qty">1 bouteille</span></td><td>5-10ml/repas · cuisson + assaisonnement</td></tr>
+<tr><td>Riz à sushi (500g)</td><td><span class="qty">1 sac</span></td><td>Sushi bowl × 2 mois — 80g cru/repas</td></tr>
+<tr><td>Vinaigre de riz</td><td><span class="qty">1 bouteille</span></td><td>Dure 6+ mois</td></tr>
+<tr><td>Graines de sésame</td><td><span class="qty">1 petit sac</span></td><td>Sushi bowl</td></tr>
+<tr><td>Wraps Egglife (oeufs)</td><td><span class="qty">2 paquets de 6</span></td><td>~1g glucides/wrap · 1 wrap/repas × 6 repas · Avril ou en ligne</td></tr>
+<tr><td>Pain complet (tranches)</td><td><span class="qty">1 pain</span></td><td>30g (1 tranche)/repas × 8 repas de toast</td></tr>
+<tr><td>Pasta (spaghetti ou penne)</td><td><span class="qty">300g</span></td><td>60g sec/repas × 5 repas crevettes</td></tr></tbody>
+    </table>
+  </div>
+  <div class="store-hdr s-av" style="margin-top:1.25rem">🟢 Avril Supermarché Santé — 1100 Ottawa</div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="gtbl">
+      <thead><tr><th>Produit</th><th>Quantité 30j</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Avocats bio (sac 4–5)</td><td><span class="qty">~3 sacs</span></td><td>Acheter fermes · Mûrissent en 2–3j · Renouveler 3× dans le mois</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sushi-box">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px">🍣 Sushi bowl Philadelphie — 2× par mois</div>
+    <div style="font-size:12px;color:#1e40af;line-height:1.6">80g riz à sushi cuit + vinaigre de riz + sel · Saumon fumé + avocat + concombre + fromage à la crème · Sauce soya + sriracha + graines de sésame · <strong>Remplace le dîner ce jour-là.</strong> Tous les ingrédients spéciaux sont chez Adonis.</div>
+  </div>
+</div>
+
+<!-- COOKING -->
+<div class="sec" id="sec-cooking">
+  <div class="sec-title">Méthodes de <span>cuisine</span></div>
+  <div class="sec-sub">Poêle · Air fryer Ninja dual zone · Four</div>
+  <div class="cgrid">
+  <div class="ccard"><div class="ctitle">🍳 Crevettes à la poêle</div><div class="cdet">Sécher complètement. Poêle chaude + huile. 2–3 min/côté feu moyen-vif. Prêtes quand roses et recourbées.</div></div>
+  <div class="ccard"><div class="ctitle">🥩 Steak à la poêle</div><div class="cdet">Sortir 15 min avant. Poêle très chaude. Saisir 3–4 min/côté. Déglacer au citron. Reposer 5 min — obligatoire.</div></div>
+  <div class="ccard"><div class="ctitle">🍗 Poulet à la poêle</div><div class="cdet">Aplatir légèrement. Feu moyen + huile. 5–6 min/côté. Couvrir 2 min à la fin. Vérifier (plus de rose).</div></div>
+  <div class="ccard"><div class="ctitle">🍗 Pilons de poulet</div><div class="cdet"><strong>Four :</strong> 200°C / 35 min. Assaisonner (paprika, ail, cumin, huile). Retourner à mi-cuisson. Peau dorée = prêts.<br><strong>Air fryer :</strong> 190°C / 22–25 min, retourner à mi-cuisson. Plus croustillant.</div></div>
+  <div class="ccard"><div class="ctitle">🥣 Soupe signature (zucchini-butternut-carotte)</div><div class="cdet">Faire revenir oignon vert dans un peu d'huile. Ajouter zucchini + carotte + butternut squash en cubes. Couvrir d'eau, mijoter 20–25 min jusqu'à tendreté. Mixer au blender ou mixeur plongeant. Ajouter 1–2 c.s. de crème fraîche. Saler, poivrer. Réchauffer à la poêle/casserole facilement.</div></div>
+  <div class="ccard"><div class="ctitle">🐟 Sole à la poêle</div><div class="cdet">Décongeler et sécher. Poêle moyenne + huile. 2–3 min/côté max — cuit très vite. Finir avec citron + herbes.</div></div>
+  <div class="ccard"><div class="ctitle">🍖 Boeuf haché à la poêle</div><div class="cdet">Poêle chaude sans couvercle. Écraser et remuer. Assaisonner en cours (cumin, paprika, ail). 8–10 min.</div></div>
+  <div class="ccard"><div class="ctitle">🥚 Oeufs — 3 façons</div><div class="cdet"><strong>Brouillés :</strong> feu très doux, remuer lentement.<br><strong>Omelette :</strong> feu moyen, replier à mi-cuisson.<br><strong>Durs :</strong> eau froide → ébullition → éteindre → couvrir 10 min → eau glacée.</div></div>
+  <div class="ccard"><div class="ctitle">🌬 Air fryer — protéines</div><div class="cdet">Préchauffer 3 min. Crevettes 180°C/7 min · Steak 200°C/9 min · Poulet 190°C/18 min · Sole 180°C/8 min · Lanières 190°C/12 min.</div></div>
+  <div class="ccard"><div class="ctitle">🥦 Air fryer / four — légumes</div><div class="cdet">Carottes 200°C/12 min · Champignons 190°C/12 min · Tomates 180°C/8 min. Chou-fleur four 200°C/25 min + parmesan les 5 dernières min.</div></div>
+  <div class="ccard"><div class="ctitle">🥗 Salade de steak (avocat + maïs + olives)</div><div class="cdet">Saisir steak à la poêle. Laisser reposer 5 min. Trancher. Disposer sur laitue avec avocat tranché, maïs égoutté, olives vertes. Citron + huile d'olive. Simple et frais.</div></div>
+  <div class="ccard"><div class="ctitle">🍞 Toast complet garni</div><div class="cdet">Griller le pain complet. Lanières de poulet poêlées (paprika + ail). Déposer sur toast avec feta émiettée, tranche de tomate fraîche et charcuterie. Manger chaud.</div></div>
+  <div class="ccard"><div class="ctitle">🥔 Pommes de terre rôties / cubes ail-fromage</div><div class="cdet"><strong>Rôties :</strong> cubes + huile + sel + herbes. Four 200°C/25 min en remuant à mi-cuisson.<br><strong>Ail-fromage :</strong> même chose + ail en poudre. Fromage râpé les 5 dernières min jusqu'à fondu et doré.</div></div>
+  <div class="ccard"><div class="ctitle">🍝 Pasta beurre-parmesan</div><div class="cdet">Cuire pasta al dente (salée). Égoutter en gardant 2 c.s. d'eau de cuisson. Mélanger avec une noix de beurre + parmesan râpé + eau de cuisson. Poivre noir. Prêt en 10 min.</div></div>
+</div>
+</div>
+
+<!-- LEARNING -->
+<div class="sec" id="sec-learning">
+  <div class="sec-title">Plan <span>d'apprentissage</span></div>
+  <div class="sec-sub">HTML → CSS → JS → TypeScript → React → Backend → BDD + Calculus 1&2 en parallèle</div>
+  <div class="note" style="background:#eff6ff;border-color:#93c5fd;color:#1e40af">💡 <strong>Stratégie :</strong> 1h de coding pendant le slot lunch (12h–13h) + sessions supplémentaires l'après-midi libre. Ne pas sauter d'étape — chaque niveau déblocke le suivant. Calculus en parallèle le soir ou le weekend.</div>
+  <div class="learn-grid">
+  <div class="lcard"><div class="lnum">Étape 1</div><div class="ltitle">HTML</div><div class="ldet">Les bases : balises, structure, sémantique. Construire 3 pages statiques. C'est le squelette de tout.</div><div class="lres">📚 freeCodeCamp · MDN</div><span class="ltime">⏱ ~2 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 2</div><div class="ltitle">CSS</div><div class="ldet">Flexbox, Grid, animations, responsive. Rendre tes pages jolies. Exercice : refaire ton plan de vie en HTML/CSS.</div><div class="lres">📚 freeCodeCamp · CSS Tricks</div><span class="ltime">⏱ ~3 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 3</div><div class="ltitle">JavaScript</div><div class="ldet">Variables, fonctions, DOM, events, fetch, async/await. Le plus important — prends ton temps ici.</div><div class="lres">📚 javascript.info · Eloquent JS</div><span class="ltime">⏱ ~6–8 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 4</div><div class="ltitle">TypeScript</div><div class="ldet">JS avec des types. Apprendre après JS solide — devient naturel. Rend le code plus robuste.</div><div class="lres">📚 TypeScript Docs · Matt Pocock</div><span class="ltime">⏱ ~2 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 5</div><div class="ltitle">React</div><div class="ldet">Composants, hooks, state, props, useEffect. Construire une vraie app. Tout s'assemble ici.</div><div class="lres">📚 react.dev · Scrimba</div><span class="ltime">⏱ ~4 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 6</div><div class="ltitle">Backend (Node/Express)</div><div class="ldet">Serveurs, routes, REST APIs, authentification. Tu commences à construire des trucs réels.</div><div class="lres">📚 The Odin Project · freeCodeCamp</div><span class="ltime">⏱ ~4 semaines</span></div>
+  <div class="lcard"><div class="lnum">Étape 7</div><div class="ltitle">Bases de données</div><div class="ldet">SQL, PostgreSQL, requêtes, relations. Connecter ton backend à une vraie BDD.</div><div class="lres">📚 SQLZoo · Prisma Docs</div><span class="ltime">⏱ ~3 semaines</span></div>
+  <div class="lcard"><div class="lnum">En parallèle</div><div class="ltitle">Calculus 1 & 2</div><div class="ldet">Essence of Calculus (YouTube 3B1B) d'abord — visuels magnifiques. Khan Academy pour les exercices. 30 min/soir.</div><div class="lres">📚 3Blue1Brown · Khan Academy</div><span class="ltime">⏱ Tout au long</span></div>
+</div>
+</div>
+
+<!-- CAT -->
+<div class="sec" id="sec-cat">
+  <div class="sec-title">Soin du <span>chat</span> 🐱</div>
+  <div class="sec-sub">Horaire + conseils nutrition — elle est en régime aussi!</div>
+  <div class="cat-box">
+    <div style="font-size:13px;font-weight:500;margin-bottom:2px">Horaire des repas</div>
+    <div class="cat-grid">
+      <div class="card" style="margin:0;background:rgba(255,255,255,0.7)"><div style="font-size:12px;font-weight:500;margin-bottom:3px">☀️ Semaine — matin</div><div style="font-size:12px;color:var(--mid)"><strong>7h10</strong> — Même heure tous les jours.</div></div>
+      <div class="card" style="margin:0;background:rgba(255,255,255,0.7)"><div style="font-size:12px;font-weight:500;margin-bottom:3px">🌙 Semaine — soir</div><div style="font-size:12px;color:var(--mid)"><strong>18h00</strong> — ~12h après le matin.</div></div>
+      <div class="card" style="margin:0;background:rgba(255,255,255,0.7)"><div style="font-size:12px;font-weight:500;margin-bottom:3px">☀️ Weekend — matin</div><div style="font-size:12px;color:var(--mid)"><strong>9h–10h</strong> — Décalage ok.</div></div>
+      <div class="card" style="margin:0;background:rgba(255,255,255,0.7)"><div style="font-size:12px;font-weight:500;margin-bottom:3px">🌙 Weekend — soir</div><div style="font-size:12px;color:var(--mid)"><strong>18h00</strong> — Constant même le weekend.</div></div>
+    </div>
+    <div style="font-size:13px;font-weight:500;margin-top:14px;margin-bottom:8px">Conseils nutrition (régime)</div>
+    <div style="font-size:12px;color:var(--mid);line-height:1.7">
+      🥫 <strong>Nourriture humide &gt; croquettes</strong> — plus hydratante, meilleure pour perdre du poids.<br>
+      ⚖️ <strong>Peser les portions</strong> — ne jamais estimer à l'œil. Demander au vétérinaire.<br>
+      🚫 <strong>Retirer le bol entre les repas</strong> — pas de grignotage. 2 repas minutés seulement.<br>
+      💧 <strong>Eau fraîche toujours disponible</strong> — bol séparé, fontaine si possible.<br>
+
+<script>
+function showSec(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('sec-' + id).classList.add('active');
+  btn.classList.add('on');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showWeek(w, btn) {
+  document.querySelectorAll('.wtab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('meal-content').innerHTML = meals[w].map(d => {
+    const totalCal = (d.bcal||0) + (d.dcal||0);
+    const totalCarb = (d.bcarb||0) + (d.dcarb||0);
+    return '<div class="day-card">' +
+    (d.prep ? '<div style="font-size:11px;color:#7e22ce;background:#fdf4ff;border:1px solid #d8b4fe;border-radius:6px;padding:3px 9px;margin-bottom:8px;display:inline-block">🥡 Jour de meal prep</div>' : '') +
+    '<div class="dh"><div class="dn">' + d.d + '</div><div class="dbs"><span class="db db-cal">🔥 ' + totalCal + ' cal</span><span class="db db-c">🌾 ' + totalCarb + 'g glucides</span></div></div>' +
+    '<div class="mt">Petit-déjeuner</div><div class="mn">' + d.b + '</div>' +
+    '<div style="font-size:11px;color:#7a5a00;background:var(--gold-l);padding:2px 8px;border-radius:6px;display:inline-block;margin:3px 0">' + (d.bcal||'') + ' cal · ' + (d.bcarb||'') + 'g glucides</div>' +
+    '<div class="md">' + d.bd + '</div>' +
+    '<div class="mdiv"></div>' +
+    '<div class="mt">Dîner</div><div class="mn">' + d.din + '</div>' +
+    '<div style="font-size:11px;color:#7a5a00;background:var(--gold-l);padding:2px 8px;border-radius:6px;display:inline-block;margin:3px 0">' + (d.dcal||'') + ' cal · ' + (d.dcarb||'') + 'g glucides</div>' +
+    '<div class="md">' + d.dd + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// MACROS PAR REPAS — cible 1000 cal/jour, ≤50g glucides
+// Petit-déj de base (2 oeufs durs 140g + 80g concombre + 100g yogourt grec): ~305 cal, 8g glucides
+const meals = {
+  1:[
+    {d:"Jour 1 — Lundi",prep:true,
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"Simple, déjà préparé la veille.",
+     din:"130g boeuf haché extra-maigre + sauce tomate maison (100g tomates dés + ½ oignon + 1 gousse ail) + 80g champignons sautés + 100g pomme de terre rôtie",
+     dcal:695,dcarb:40,
+     dd:"Brunir 130g boeuf avec ½ oignon + ail + origan. Ajouter 100g tomates dés, mijoter 10 min. 100g pomme de terre en cubes + 5ml huile au four 200°C/25 min. 80g champignons sautés à côté. Total jour : 1000 cal · 48g glucides."},
+    {d:"Jour 2 — Mardi",
+     b:"1 wrap Egglife + 2 œufs brouillés (120g) + 25g feta + aneth",
+     bcal:290,bcarb:5,
+     bd:"2 œufs brouillés sur wrap Egglife avec 25g feta + aneth. Rouler.",
+     din:"300ml soupe signature (zucchini-butternut-carotte) + 1 tranche pain complet (30g) + 80g lanières poulet + 20g feta + 1 tomate (80g) + 30g charcuterie dinde",
+     dcal:710,dcarb:42,
+     dd:"Soupe : 80g zucchini + 80g butternut + 60g carotte + oignon vert + 15ml crème fraîche, mijoter 25 min, mixer. Toast complet 30g grillé avec 80g lanières poulet poêlées (ail, paprika), 20g feta, 80g tomate, 30g charcuterie. Total jour : 1000 cal · 47g glucides."},
+    {d:"Jour 3 — Mercredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g steak contre-filet + ½ avocat (75g) + 60g maïs égoutté + 8 olives vertes + 60g laitue romaine + 10ml huile d'olive + citron",
+     dcal:695,dcarb:38,
+     dd:"Saisir 150g steak à la poêle 3-4 min/côté, reposer 5 min. Servir sur 60g laitue avec ½ avocat tranché, 60g maïs, 8 olives. 10ml huile + citron. Total jour : 1000 cal · 46g glucides."},
+    {d:"Jour 4 — Jeudi",
+     b:"3 œufs omelette + 25g feta + 60g tomate",
+     bcal:295,bcarb:5,
+     bd:"Poêle + 5ml huile. 25g feta + 60g tomate avant de plier.",
+     din:"3 pilons de poulet (~300g cru) air fryer + 120g pomme de terre en cubes ail-fromage + 15g fromage râpé",
+     dcal:705,dcarb:24,
+     dd:"3 pilons (~300g cru, ~210g cuit) air fryer 190°C/25 min, retourner à mi-cuisson. 120g pomme de terre en cubes + 5ml huile + ail en poudre + sel, air fryer 200°C/20 min, 15g fromage râpé les 5 dernières min. Total jour : 1000 cal · 29g glucides."},
+    {d:"Jour 5 — Vendredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"Salade César : 150g poitrine de poulet grillée + 100g laitue romaine + 20g parmesan râpé + sauce César (30ml) + croûtons légers (15g pain complet grillé en dés)",
+     dcal:695,dcarb:18,
+     dd:"Griller 150g poitrine assaisonnée (sel, poivre, ail) à la poêle 5-6 min/côté, trancher en lanières. Sur 100g laitue romaine + 20g parmesan + 15g pain complet en dés grillés. Arroser de 30ml sauce César. Total jour : 1000 cal · 26g glucides."},
+    {d:"Jour 6 — Samedi",prep:true,
+     b:"1 wrap Egglife + 30g fromage à la crème + 80g concombre + aneth",
+     bcal:280,bcarb:6,
+     bd:"Étaler 30g cream cheese sur wrap Egglife. 80g concombre + aneth. Rouler.",
+     din:"350ml soupe signature + 2 œufs durs (140g)",
+     dcal:720,dcarb:30,
+     dd:"350ml soupe signature (zucchini 100g + butternut 100g + carotte 70g + oignon vert + 20ml crème fraîche). 2 œufs durs à côté pour les protéines. Total jour : 1000 cal · 36g glucides."},
+    {d:"Jour 7 — Dimanche",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"Cuire lot de 8 œufs pour la semaine.",
+     din:"4 grands champignons (~250g) farcis avec 120g boeuf haché + ail + 60g tomate dés + paprika + 25g feta + 15g parmesan",
+     dcal:695,dcarb:12,
+     dd:"4 grands champignons farcis avec 120g boeuf + ail + 60g tomate + paprika + 25g feta. Four 200°C/20 min. 15g parmesan râpé les 5 dernières min. Total jour : 1000 cal · 20g glucides."},
+  ],
+  2:[
+    {d:"Jour 8 — Lundi",prep:true,
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"Salade César : 150g poitrine de poulet grillée + 100g laitue romaine + 20g parmesan râpé + sauce César (30ml) + croûtons légers (15g pain complet grillé en dés)",
+     dcal:695,dcarb:18,
+     dd:"Griller 150g poitrine (sel, poivre, ail en poudre) à la poêle 5-6 min/côté, trancher. Sur 100g laitue romaine + 20g parmesan + 15g pain en dés grillés. 30ml sauce César. Total jour : 1000 cal · 26g glucides."},
+    {d:"Jour 9 — Mardi",
+     b:"3 œufs brouillés (150g) + 30g gouda râpé",
+     bcal:305,bcarb:2,
+     bd:"3 œufs brouillés lentement à feu doux. 30g gouda râpé plié à la fin.",
+     din:"400ml soupe signature avec 15ml crème fraîche + 2 œufs durs (140g)",
+     dcal:695,dcarb:33,
+     dd:"Soupe : 100g zucchini + 100g butternut squash + 70g carotte + oignon vert, 600ml eau, mijoter 25 min. Mixer. 15ml crème fraîche. 2 œufs durs à côté. Total jour : 1000 cal · 35g glucides."},
+    {d:"Jour 10 — Mercredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g steak contre-filet + ½ avocat (75g) + 60g maïs + 8 olives vertes + 60g laitue + 10ml huile + citron",
+     dcal:695,dcarb:38,
+     dd:"Saisir 150g steak. Lit de 60g laitue avec ½ avocat, 60g maïs, 8 olives. 10ml huile d'olive + citron. Total jour : 1000 cal · 46g glucides."},
+    {d:"Jour 11 — Jeudi",
+     b:"3 œufs omelette + 30g fromage à la crème + aneth",
+     bcal:290,bcarb:3,
+     bd:"3 œufs + 30g cream cheese à mi-cuisson. Aneth.",
+     din:"1 tranche pain complet (30g) + 80g lanières poulet + 25g feta + 80g tomate + 30g charcuterie dinde",
+     dcal:710,dcarb:34,
+     dd:"Toast 30g grillé. 80g lanières poulet poêlées (ail, paprika). 25g feta émiettée + 80g tomate + 30g charcuterie. Total jour : 1000 cal · 37g glucides."},
+    {d:"Jour 12 — Vendredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"1 boîte thon 170g égoutté + ½ avocat (75g) + 60g laitue + 80g tomate + 25g feta + 10ml huile + citron",
+     dcal:695,dcarb:15,
+     dd:"Thon 170g égoutté + citron + 10ml huile + piment. Sur 60g laitue avec ½ avocat tranché, 80g tomate, 25g feta émiettée. Total jour : 1000 cal · 23g glucides."},
+    {d:"Jour 13 — Samedi",prep:true,
+     b:"150g yogourt grec nature + 80g concombre + aneth",
+     bcal:115,bcarb:7,
+     bd:"",
+     din:"3 pilons de poulet (~300g cru) air fryer + 120g pomme de terre cubes ail-fromage + 15g fromage râpé",
+     dcal:885,dcarb:24,
+     dd:"3 pilons air fryer 190°C/25 min. 120g pomme de terre cubes + 5ml huile + ail en poudre, air fryer 200°C/20 min, 15g fromage râpé. Total jour : 1000 cal · 31g glucides."},
+    {d:"Jour 14 — Dimanche",
+     b:"3 œufs omelette + 25g emmental fondu + 60g champignons sautés",
+     bcal:295,bcarb:3,
+     bd:"60g champignons sautés. 3 œufs omelette + 25g emmental + champignons avant de plier.",
+     din:"4 grands champignons (~250g) farcis avec 120g boeuf + ail + 60g tomate + paprika + 25g feta + 15g parmesan",
+     dcal:705,dcarb:12,
+     dd:"4 grands champignons farcis avec 120g boeuf + ail + 60g tomate + paprika + 25g feta. Four 200°C/20 min. 15g parmesan les 5 dernières min. Total jour : 1000 cal · 15g glucides."},
+  ],
+  3:[
+    {d:"Jour 15 — Lundi",prep:true,
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g poitrine de poulet désossée + sauce champignons-crème (80g champignons + 1 gousse ail + 20ml crème fraîche + thym)",
+     dcal:695,dcarb:10,
+     dd:"Saisir 150g poitrine aplatie 5-6 min/côté. Retirer. Même poêle: 80g champignons + ail + thym + 20ml crème fraîche, 3 min. Sauce versée sur le poulet. Total jour : 1000 cal · 18g glucides."},
+    {d:"Jour 16 — Mardi",
+     b:"2 œufs + 60g ricotta au four + 60g tomate + basilic",
+     bcal:285,bcarb:6,
+     bd:"60g ricotta dans plat. 2 puits + 2 œufs + 60g tomate + basilic. Four 190°C/12 min.",
+     din:"150g crevettes crues air fryer + 60g pasta sèche + 8g beurre + 15g parmesan",
+     dcal:715,dcarb:44,
+     dd:"150g crevettes air fryer 180°C/7 min. 60g pasta beurre (8g) + 15g parmesan. Total jour : 1000 cal · 50g glucides."},
+    {d:"Jour 17 — Mercredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g steak + ½ avocat (75g) + 60g maïs + 8 olives vertes + 60g laitue + 10ml huile + citron",
+     dcal:695,dcarb:38,
+     dd:"Saisir 150g steak. Lit de 60g laitue avec ½ avocat, 60g maïs, 8 olives. 10ml huile + citron. Total jour : 1000 cal · 46g glucides."},
+    {d:"Jour 18 — Jeudi",
+     b:"3 œufs brouillés (150g) + 25g gouda râpé + aneth",
+     bcal:290,bcarb:2,
+     bd:"3 œufs lentement. 25g gouda râpé. Aneth + poivre.",
+     din:"1 tranche pain complet (30g) + 80g lanières poulet + 25g feta + 80g tomate + 30g charcuterie",
+     dcal:710,dcarb:35,
+     dd:"Toast 30g grillé. 80g lanières à la poêle (paprika, cumin, ail). 25g feta + 80g tomate + 30g charcuterie. Total jour : 1000 cal · 37g glucides."},
+    {d:"Jour 19 — Vendredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"1 boîte thon 170g + ½ avocat (75g) + 60g laitue + 80g tomate + 25g feta + 10ml huile + citron",
+     dcal:695,dcarb:15,
+     dd:"Thon 170g + citron + 10ml huile + piment. Sur 60g laitue avec ½ avocat, 80g tomate, 25g feta. Total jour : 1000 cal · 23g glucides."},
+    {d:"Jour 20 — Samedi",prep:true,
+     b:"1 wrap Egglife + 30g fromage à la crème + 80g concombre + aneth",
+     bcal:280,bcarb:6,
+     bd:"30g cream cheese sur wrap Egglife. 80g concombre + aneth. Rouler.",
+     din:"3 pilons de poulet (~300g cru) air fryer + 120g pomme de terre cubes ail-fromage + 15g fromage râpé",
+     dcal:720,dcarb:24,
+     dd:"3 pilons air fryer 190°C/25 min. 120g cubes pomme de terre ail-fromage + 15g fromage râpé. Total jour : 1000 cal · 30g glucides."},
+    {d:"Jour 21 — Dimanche",
+     b:"3 œufs omelette + 25g feta + 60g tomate + origan au four",
+     bcal:295,bcarb:5,
+     bd:"3 œufs dans plat + 60g tomate + 25g feta + origan. Four 190°C/12 min.",
+     din:"130g boeuf haché + sauce tomate (100g tomates + ½ oignon + ail + origan) + 100g pomme de terre rôtie",
+     dcal:705,dcarb:40,
+     dd:"130g boeuf + sauce tomate maison (100g tomates, ½ oignon, ail, origan). 100g pomme de terre rôtie en cubes + 5ml huile. Total jour : 1000 cal · 45g glucides."},
+  ],
+  4:[
+    {d:"Jour 22 — Lundi",prep:true,
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g poitrine de poulet + 120g pomme de terre rôtie + 5ml huile + herbes",
+     dcal:695,dcarb:25,
+     dd:"150g poitrine aplatie légèrement, poêle feu moyen 5-6 min/côté. 120g pomme de terre en cubes + 5ml huile + sel + herbes, four 200°C/25 min en remuant à mi-cuisson. Total jour : 1000 cal · 33g glucides."},
+    {d:"Jour 23 — Mardi",
+     b:"3 œufs brouillés (150g) + 40g ricotta + aneth",
+     bcal:285,bcarb:3,
+     bd:"3 œufs + 40g ricotta à la fin. Aneth + poivre.",
+     din:"400ml soupe signature (zucchini + butternut + carotte + 20ml crème fraîche) + 2 œufs durs (140g)",
+     dcal:715,dcarb:32,
+     dd:"Soupe : 100g zucchini + 100g butternut + 70g carotte + oignon vert + 20ml crème fraîche. Mijoter 25 min. Mixer. 2 œufs durs à côté. Total jour : 1000 cal · 35g glucides."},
+    {d:"Jour 24 — Mercredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g steak + ½ avocat (75g) + 60g maïs + 8 olives vertes + 60g laitue + 10ml huile + citron",
+     dcal:695,dcarb:38,
+     dd:"Saisir 150g steak. 60g laitue + ½ avocat + 60g maïs + 8 olives. 10ml huile + citron. Total jour : 1000 cal · 46g glucides."},
+    {d:"Jour 25 — Jeudi",
+     b:"1 wrap Egglife + 2 œufs brouillés (120g) + 30g fromage à la crème + oignon vert",
+     bcal:285,bcarb:5,
+     bd:"2 œufs brouillés + 30g cream cheese fondu. Sur wrap Egglife. Oignon vert haché.",
+     din:"1 tranche pain complet (30g) + 80g lanières poulet + 25g feta + 80g tomate + 30g charcuterie",
+     dcal:715,dcarb:35,
+     dd:"Toast 30g grillé. 80g lanières à la poêle. 25g feta + 80g tomate + 30g charcuterie. Total jour : 1000 cal · 40g glucides."},
+    {d:"Jour 26 — Vendredi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"150g poitrine de poulet + sauce tomate-basilic (100g tomates + ½ oignon + ail + basilic) + 55g pasta sèche + 10g parmesan",
+     dcal:695,dcarb:46,
+     dd:"Dorer 150g poitrine 5-6 min/côté, trancher. Même poêle : ½ oignon + ail + 100g tomates dés + basilic, mijoter 8 min. 55g pasta al dente (~135g cuite) mélangée à la sauce. Poulet par-dessus, 10g parmesan. Total jour : 1000 cal · 54g glucides."},
+    {d:"Jour 27 — Samedi",prep:true,
+     b:"150g yogourt grec nature + 80g concombre + aneth",
+     bcal:115,bcarb:7,
+     bd:"",
+     din:"3 pilons de poulet (~300g cru) air fryer + 120g pomme de terre cubes ail-fromage + 15g fromage râpé",
+     dcal:885,dcarb:24,
+     dd:"3 pilons air fryer 190°C/25 min. 120g cubes pomme de terre ail-fromage + 15g fromage râpé. Total jour : 1000 cal · 31g glucides."},
+    {d:"Jour 28 — Dimanche",
+     b:"2 œufs omelette au four + 25g emmental + 60g champignons",
+     bcal:275,bcarb:3,
+     bd:"60g champignons sautés + 2 œufs + 25g emmental. Four 190°C/10 min.",
+     din:"4 grands champignons (~250g) farcis avec 120g boeuf + ail + 60g tomate + paprika + 25g feta + 15g parmesan",
+     dcal:725,dcarb:12,
+     dd:"120g boeuf + ail + 60g tomate + paprika + 25g feta dans 4 champignons. Four 200°C/20 min. 15g parmesan. Total jour : 1000 cal · 15g glucides."},
+  ],
+  5:[
+    {d:"Jour 29 — Lundi",
+     b:"2 œufs durs (140g) + 80g concombre + aneth + 100g yogourt grec nature",
+     bcal:305,bcarb:8,
+     bd:"",
+     din:"1 boîte thon 170g + ½ avocat (75g) + 60g laitue + 80g tomate + 25g feta + 10ml huile + citron",
+     dcal:695,dcarb:15,
+     dd:"Thon 170g + citron + 10ml huile + piment. 60g laitue + ½ avocat + 80g tomate + 25g feta. Total jour : 1000 cal · 23g glucides."},
+    {d:"Jour 30 — Mardi",
+     b:"3 œufs omelette de célébration + 20g gouda + 20g feta + 60g tomate + aneth",
+     bcal:305,bcarb:5,
+     bd:"3 œufs + 20g gouda + 20g feta + 60g tomate + aneth. 30 jours accomplis! 🎉",
+     din:"130g boeuf haché + sauce tomate (100g tomates + ½ oignon + ail + origan) + 100g pomme de terre rôtie",
+     dcal:695,dcarb:40,
+     dd:"Ton classique pour finir le mois en beauté. 130g boeuf + sauce tomate maison. 100g pomme de terre rôtie. Total jour : 1000 cal · 45g glucides."},
+  ]
+};
+
+showWeek(1, document.querySelector('.wtab'));
+</script>
+</body>
+</html>
